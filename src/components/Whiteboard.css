@@ -1,0 +1,334 @@
+body {
+            font-family: 'Inter', sans-serif;
+            
+            overflow: hidden; /* Prevents scrollbars from the main page */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+
+.whiteboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+
+.toolbar {
+  
+  position: fixed;
+  z-index: 1000;
+  gap: 10px;
+  margin-top: 20px;
+  left: 40px;
+  padding: 15px;
+  
+  display: flex;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 330px;
+  /* justify-content: center; */
+
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.08);
+
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+-webkit-backdrop-filter: blur(7.7px);
+backdrop-filter: blur(7.7px);
+border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+
+
+
+
+/* --- Toolbar Tool Styles --- */
+        .toolbar-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* height: 44px; */
+            padding: 0 12px;
+            border: none;
+            background-color: transparent;
+            
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            
+            
+        }
+
+         .brush-dropdown-button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+       
+        
+        
+        
+        /*  */
+        /* Separator line in the toolbar */
+        .separator {
+            width: 1px;
+            height: 24px;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 0 4px;
+        }
+
+        
+
+.brush-sizes {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  
+}
+
+.brush-size {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.brush-size:hover {
+  background-color: #f0f0f0;
+}
+
+.brush-size.active {
+  background-color: #333;
+  color: white;
+}
+
+.eraser {
+  /* padding: 5px 15px; */
+  border: 0px;
+  background-color: white;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 1px;
+}
+
+.eraser:hover {
+  background-color: #f0f0f0;
+}
+
+.eraser.active {
+  background-color: #ff6b6b;
+  color: white;
+  border-color: #ff6b6b;
+}
+
+.clear-btn {
+  /* padding: 5px 15px; */
+  border: 0px ;
+  background-color: white;
+  color: #ff6b6b;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  padding: 1px;
+}
+
+.clear-btn:hover {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.whiteboard {
+  background-color: white;
+  border-radius: 28px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  /* cursor: crosshair; */
+  margin-bottom: 20px;
+}
+
+
+
+
+
+/* ... existing styles ... */
+
+/* Color Picker Styles */
+.color-picker-container {
+  position: relative;
+  display: inline-block;
+}
+
+.color-picker-button {
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  border: 1.5px solid #b0a9a9;
+  cursor: pointer;
+  transition:all 0.2s ease;
+  outline: none;
+  position: relative;
+  z-index: 100;
+}
+
+.color-picker-button:hover {
+            transform: scale(1.05);
+            
+        }
+
+
+.color-wheel {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: white;
+  border-radius: 50%;
+  
+  padding: 10px;
+  z-index: 10;
+  top: -60px;
+  left: -60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.color-wheel .color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  transform-origin: center;
+}
+
+.color-wheel .color-option:hover {
+  transform: scale(1.5) ;
+  z-index: 2;
+}
+
+/* Brush Dropdown Styles */
+.brush-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.brush-dropdown-button {
+  
+  padding: 13px;
+  background-color: white;
+  border: 0px ;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  
+  transition: all 0.2s;
+  min-width: 60px;
+  text-align: center;
+}
+
+.brush-dropdown-button:hover {
+  background-color: #f0f0f0;
+}
+
+.brush-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 24px;
+  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  width: 150px;
+  max-height: 200px;
+  overflow: hidden;
+  padding: 8px;
+  
+}
+
+.brush-size-option {
+   display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8.3px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 18px;
+            font-size: 14px;
+}
+
+.brush-preview {
+            height: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+.brush-size-option:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.brush-size-option.active {
+  background-color: #e0e0e0;
+  
+}
+
+/* Ensure other dropdowns close when interacting with other elements */
+.toolbar > * {
+  margin-right: 10px;
+}
+
+
+/* Toolbar buttons */
+.text-tool {
+  background-color: white;
+  border: 0px solid #ccc;
+  padding: 12px 19px;
+  /* margin-left: 4px; */
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px;
+  transition: background-color 0.2s ease;
+}
+
+.text-tool:hover {
+  background-color: #f0f0f0;
+}
+
+.text-tool.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* Text preview tooltip */
+.text-preview {
+  position: absolute;
+  transform: translate(11px, 20px);
+  
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px dashed #888;
+  padding: 2px 6px;
+  font-size: 14px;
+  color: #333;
+  border-radius: 4px;
+  z-index: 1;
+  -webkit-user-select:none;
+  user-select: none;
+  
+}
+
+.whiteboard-container.text-cursor canvas {
+  cursor: text;
+}
