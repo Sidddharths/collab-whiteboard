@@ -24,16 +24,18 @@ body {
   z-index: 1000;
   gap: 10px;
   margin-top: 20px;
-  left: 40px;
+  /* left: 40px; */
   padding: 15px;
   
+  left: 50%;
+  transform: translateX(-50%);
+
   display: flex;
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   width: 330px;
-  /* justify-content: center; */
+  
 
-  /* From https://css.glass */
 background: rgba(255, 255, 255, 0.08);
 
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -114,7 +116,7 @@ border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 14px;
   cursor: pointer;
   transition: all 0.2s;
-  padding: 1px;
+  padding: 12px 14px;
 }
 
 .eraser:hover {
@@ -136,7 +138,7 @@ border: 1px solid rgba(255, 255, 255, 0.72);
   cursor: pointer;
   transition: all 0.2s;
 
-  padding: 1px;
+  padding: 12px 14px;
 }
 
 .clear-btn:hover {
@@ -184,15 +186,15 @@ border: 1px solid rgba(255, 255, 255, 0.72);
 
 .color-wheel {
   position: absolute;
-  width: 140px;
-  height: 140px;
+  width: 160px;
+  height: 160px;
   background: white;
   border-radius: 50%;
   
   padding: 10px;
   z-index: 10;
-  top: -60px;
-  left: -60px;
+  top: -70px;
+  left: -70px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -222,7 +224,7 @@ border: 1px solid rgba(255, 255, 255, 0.72);
 
 .brush-dropdown-button {
   
-  padding: 13px;
+  padding: 17px 11px;
   background-color: white;
   border: 0px ;
   border-radius: 14px;
@@ -332,5 +334,3 @@ border: 1px solid rgba(255, 255, 255, 0.72);
 .whiteboard-container.text-cursor canvas {
   cursor: text;
 }
-
-
