@@ -124,43 +124,36 @@ export const useWhiteboard = () => {
   const strokeContexts = useRef(new Map());
 
   const drawLineFromSocket = (x0, y0, x1, y1, color, brushSize, isEraser, strokeId, isStrokeStart) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  const canvas = canvasRef.current;
+  if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
 
-    // Save current context
-    const currentStrokeStyle = ctx.strokeStyle;
-    const currentLineWidth = ctx.lineWidth;
-    
-    // Set drawing properties
-    ctx.strokeStyle = isEraser ? "#FFFFFF" : color;
-    ctx.lineWidth = brushSize;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    
-    if (isStrokeStart) {
-      // Start new path for this stroke
+  ctx.save(); // Save current drawing state
+  ctx.strokeStyle = isEraser ? "#FFFFFF" : color;
+  ctx.lineWidth = brushSize;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  if (isStrokeStart || !strokeContexts.current.has(strokeId)) {
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    strokeContexts.current.set(strokeId, { lastX: x0, lastY: y0 });
+  } else {
+    const strokeContext = strokeContexts.current.get(strokeId);
+    if (strokeContext) {
       ctx.beginPath();
-      ctx.moveTo(x0, y0);
-      strokeContexts.current.set(strokeId, { lastX: x0, lastY: y0 });
-    } else {
-      // Continue existing stroke
-      const strokeContext = strokeContexts.current.get(strokeId);
-      if (strokeContext) {
-        ctx.beginPath();
-        ctx.moveTo(strokeContext.lastX, strokeContext.lastY);
-        ctx.lineTo(x1, y1);
-        ctx.stroke();
-        strokeContexts.current.set(strokeId, { lastX: x1, lastY: y1 });
-      }
+      ctx.moveTo(strokeContext.lastX, strokeContext.lastY);
+      ctx.lineTo(x1, y1);
+      ctx.stroke();
+      strokeContexts.current.set(strokeId, { lastX: x1, lastY: y1 });
     }
-    
-    // Restore context
-    ctx.strokeStyle = currentStrokeStyle;
-    ctx.lineWidth = currentLineWidth;
-  };
+  }
+
+  ctx.restore(); // Restore previous drawing state
+};
+
 
   const drawLine = (x0, y0, x1, y1, color, brushSize, isEraser, emit = true) => {
     const canvas = canvasRef.current;
@@ -199,6 +192,8 @@ export const useWhiteboard = () => {
   const startDrawing = (e) => {
     // Prevent default touch behavior (scrolling, zooming)
     e.preventDefault();
+
+    
     
     const canvas = canvasRef.current;
     const coords = getEventCoordinates(e);
@@ -254,8 +249,16 @@ export const useWhiteboard = () => {
       const midX = (lastPos.x + coords.x) / 2;
       const midY = (lastPos.y + coords.y) / 2;
       
-      ctx.quadraticCurveTo(lastPos.x, lastPos.y, midX, midY);
-      ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(lastPos.x, lastPos.y);
+    ctx.lineTo(coords.x, coords.y);
+    ctx.stroke();
+
+    ctx.quadraticCurveTo(lastPos.x, lastPos.y, midX, midY);
+    ctx.stroke();
+
+    
+
       
       // Emit for socket with stroke ID
       socket.emit("drawing", {
