@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { COLORS, BRUSH_SIZES, COLOR_WHEEL_POSITIONS } from "./tools"; // Added import
 
-const socket = io("http://localhost:5000");
+const socket = io("whiteboard-backend-production-adbd.up.railway.app");
 
 export const useWhiteboard = () => {
   const canvasRef = useRef(null);

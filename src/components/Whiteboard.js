@@ -127,6 +127,21 @@ useEffect(() => {
 
   return (
     <div className={`whiteboard-container ${isTextToolActive ? 'text-cursor' : ''}`} >
+
+      <div className="logo">
+  <img 
+    src="/orado-fulllogo.png" 
+    alt="Orado Logo" 
+    style={{
+      width: "100px",
+      height: "auto",
+      position: "absolute",
+      bottom: "25px",
+      right: "25px",
+      zIndex: 10
+    }}
+  />
+</div>
       
       
       <div className="toolbar">
